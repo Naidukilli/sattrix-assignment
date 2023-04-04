@@ -1,0 +1,76 @@
+<div class="login">
+  <div class="nav-tabs">
+    <div class="nav-tab" (click)="activeTab='tab1'" [class.active]="activeTab === 'tab1'">Login</div>
+    <div class="nav-tab" (click)="activeTab='tab2'" [class.active]="activeTab === 'tab2'">Register</div>
+  </div>
+
+  <div class="tab-content">
+    <div *ngIf="activeTab === 'tab1'">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+        <div>
+          <input type="text" id="username" placeholder="Username" formControlName="username">
+          <div *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+            Username is required.
+          </div>
+        </div>
+        <div>
+          <input type="password" id="password" placeholder="Password" formControlName="password">
+          <div *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+            Password is required.
+          </div>
+        </div>
+        <button type="submit" [disabled]="isLoading && loginForm.invalid">
+          <ng-container *ngIf="isLoading; else loginButton">
+            Loading...
+          </ng-container>
+          <ng-template #loginButton>
+            Login
+          </ng-template>
+        </button>
+        <div *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+    <div *ngIf="activeTab === 'tab2'">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
+        <div>
+          <input type="text" id="username" placeholder="Username" formControlName="username">
+          <div *ngIf="registerForm.get('username')?.errors?.['required'] && registerForm.get('username')?.touched">
+            Username is required.
+          </div>
+        </div>
+        <div>
+          <input type="email" id="email" placeholder="Email" formControlName="email">
+          <div *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+            Email is required.
+          </div>
+        </div>
+        <div>
+          <input type="password" id="password" placeholder="Passowrd" formControlName="password">
+          <div *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">
+            Password is required.
+          </div>
+        </div>
+        <div>
+          <input type="password" id="confirmpassword" placeholder="Confirm Password" formControlName="confirmpassword">
+          <div
+            *ngIf="registerForm.get('confirmpassword')?.errors?.['required'] && registerForm.get('confirmpassword')?.touched">
+            Confirm Password is required.
+          </div>
+        </div>
+        <button type="submit" [disabled]="isLoading && registerForm.invalid">
+          <ng-container *ngIf="isLoading; else registerButton">
+            Loading...
+          </ng-container>
+          <ng-template #registerButton>
+            Register
+          </ng-template>
+        </button>
+        <div *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

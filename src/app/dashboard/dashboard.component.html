@@ -1,0 +1,89 @@
+<header>
+    <nav>
+        <ul>
+            <li><a [routerLink]="['']" >Logout</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="side-menu">
+    <div class="menu-item" [routerLink]="['/dashboard']" [queryParams]="{type: 'register'}"
+        [class.active]="activeItem === 'register'">
+        Register
+    </div>
+    <div class="menu-item" [routerLink]="['/dashboard']" [queryParams]="{type: 'list'}"
+        [class.active]="activeItem === 'list'">
+        List
+    </div>
+</div>
+
+<div class="content">
+    <div *ngIf="activeItem === 'register'">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegister()">
+            <div>
+                <input type="text" id="name" placeholder="Name" [(ngModel)]="userList.name" formControlName="name">
+                <div *ngIf="registerForm.get('name')?.errors?.['required'] && registerForm.get('name')?.touched">
+                    Name is required.
+                </div>
+            </div>
+            <div>
+                <input type="email" id="email" placeholder="Email" [(ngModel)]="userList.email" formControlName="email">
+                <div *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+                    Email is required.
+                </div>
+            </div>
+            <div>
+                <input type="number" id="phone" placeholder="Phone" [(ngModel)]="userList.phone" formControlName="phone">
+                <div *ngIf="registerForm.get('phone')?.errors?.['required'] && registerForm.get('phone')?.touched">
+                    Phone is required.
+                </div>
+            </div>
+            <div>
+                <input type="city" id="city" placeholder="City" [(ngModel)]="userList.city" formControlName="city">
+                <div *ngIf="registerForm.get('city')?.errors?.['required'] && registerForm.get('city')?.touched">
+                    City is required.
+                </div>
+            </div>
+            <button type="submit" [disabled]="isLoading && registerForm.invalid">
+                <ng-container *ngIf="isLoading; else registerButton">
+                    Loading...
+                </ng-container>
+                <ng-template #registerButton>
+                    Submit
+                </ng-template>
+            </button>
+            <div *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+        </form>
+    </div>
+
+
+    <div *ngIf="activeItem === 'list'">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ userList.name ? userList.name : '-'}}</td>
+                    <td>{{ userList.email ? userList.email : '-'}}</td>
+                    <td>{{ userList.phone ? userList.phone : '-'}}</td>
+                    <td>{{ userList.city ? userList.city : '-'}}</td>
+                    <td>
+                        <div>
+                            <img (click)="edit()" src="assets/edit.svg">
+                            <img (click)="delete()" src="assets/delete.svg">
+                        </div>
+                        <div></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
